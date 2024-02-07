@@ -1,15 +1,18 @@
 package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "folder")
 public class FolderEntity {
     @Id
@@ -29,8 +32,10 @@ public class FolderEntity {
     private UserEntity owner;
 
     @OneToMany
-    private List<FileEntity> files;
+    @Builder.Default
+    private List<FileEntity> files = new ArrayList<>();
 
+    @Builder.Default
     private Instant createdAt = Instant.now();
 
     private Instant modifiedAt;

@@ -1,15 +1,18 @@
 package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Builder
+
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "file")
 public class FileEntity {
     @Id
@@ -25,13 +28,16 @@ public class FileEntity {
 
     private String mime_type;
 
+    @Builder.Default
     private Instant createdAt = Instant.now();
 
     private Instant modifiedAt;
 
     @OneToMany
-    private List<LinkEntity> links;
+    @Builder.Default
+    private List<LinkEntity> links = new ArrayList<>();
 
     @OneToMany
-    private List<FavoriteEntity> favorites;
+    @Builder.Default
+    private List<FavoriteEntity> favorites = new ArrayList<>();
 }

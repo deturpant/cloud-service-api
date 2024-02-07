@@ -1,15 +1,18 @@
 package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "user")
 public class UserEntity {
 
@@ -34,11 +37,13 @@ public class UserEntity {
 
     private String bio;
 
+    @Builder.Default
     private Instant registerAt = Instant.now();
 
     private Instant lastLoginAt;
 
     @OneToMany
-    private List<FolderEntity> folders;
+    @Builder.Default
+    private List<FolderEntity> folders = new ArrayList<>();
 
 }

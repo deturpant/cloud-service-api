@@ -24,14 +24,13 @@ public class FolderEntity {
 
 
     @ManyToOne
-    @JoinColumn(name="root_folder_id")
     private FolderEntity root_folder;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="owner_id")
     private UserEntity owner;
 
-    @OneToMany
+    @OneToMany(mappedBy = "folder")
     @Builder.Default
     private List<FileEntity> files = new ArrayList<>();
 

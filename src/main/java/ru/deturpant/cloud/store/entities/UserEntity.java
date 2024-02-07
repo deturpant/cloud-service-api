@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "user")
+@Table(name = "account")
 public class UserEntity {
 
     @Id
@@ -42,7 +42,7 @@ public class UserEntity {
 
     private Instant lastLoginAt;
 
-    @OneToMany
+    @OneToMany(mappedBy = "owner")
     @Builder.Default
     private List<FolderEntity> folders = new ArrayList<>();
 

@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Getter
 @Builder
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "file")
@@ -19,7 +18,7 @@ public class FileEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "folder_id")
+    @JoinColumn(name="folder_id")
     private FolderEntity folder;
 
     private String name;
@@ -33,11 +32,11 @@ public class FileEntity {
 
     private Instant modifiedAt;
 
-    @OneToMany
+    @OneToOne(mappedBy = "file")
     @Builder.Default
-    private List<LinkEntity> links = new ArrayList<>();
+    private LinkEntity link = null;
 
-    @OneToMany
+    @OneToOne
     @Builder.Default
-    private List<FavoriteEntity> favorites = new ArrayList<>();
+    private FavoriteEntity favorite = null;
 }

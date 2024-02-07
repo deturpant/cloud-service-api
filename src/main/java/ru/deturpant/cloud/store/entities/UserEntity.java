@@ -3,6 +3,7 @@ package ru.deturpant.cloud.store.entities;
 import jakarta.persistence.*;
 
 import java.time.Instant;
+import java.util.List;
 
 @Entity
 public class UserEntity {
@@ -28,9 +29,11 @@ public class UserEntity {
 
     private String bio;
 
-    private Instant registerAt;
+    private Instant registerAt = Instant.now();
 
     private Instant lastLoginAt;
 
+    @OneToMany
+    private List<FolderEntity> folders;
 
 }

@@ -1,11 +1,16 @@
 package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.Instant;
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "folder")
 public class FolderEntity {
     @Id
     private Long id;

@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.deturpant.cloud.api.dto.UserDto;
 import ru.deturpant.cloud.api.exceptions.BadRequestException;
+import ru.deturpant.cloud.api.exceptions.NotFoundException;
+import ru.deturpant.cloud.api.exceptions.UnauthorizedException;
 import ru.deturpant.cloud.api.factories.UserDtoFactory;
 import ru.deturpant.cloud.store.entities.RoleEntity;
 import ru.deturpant.cloud.store.entities.UserEntity;
@@ -36,12 +38,12 @@ public class UserController {
     ) {
         UserEntity current_user = userRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new BadRequestException("User not found"));
+                .orElseThrow(() -> new NotFoundException("User not found"));
         if (Objects.equals(current_user.getPassword(), password)) {
             return userDtoFactory.makeUserDto(current_user);
         }
         else {
-            throw new BadRequestException("Invalid login/password");
+            throw new UnauthorizedException("Invalid login/password");
         }
     }
     @PostMapping(CREATE_USER)

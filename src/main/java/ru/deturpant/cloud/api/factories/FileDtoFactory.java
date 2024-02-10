@@ -12,6 +12,7 @@ public class FileDtoFactory {
                 .createdAt(entity.getCreatedAt())
                 .name(entity.getName())
                 .size(entity.getSize())
+                .path(entity.getPath())
                 .build();
     }
 }

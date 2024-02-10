@@ -30,6 +30,8 @@ public class FileEntity {
     @Builder.Default
     private Instant createdAt = Instant.now();
 
+    private String path;
+
     private Instant modifiedAt;
 
     @OneToOne(mappedBy = "file")

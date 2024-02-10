@@ -18,6 +18,8 @@ public class FileDto {
 
     Integer size;
 
+    String path;
+
     @JsonProperty("created_at")
     Instant createdAt;
 }

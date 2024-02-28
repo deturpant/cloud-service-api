@@ -42,7 +42,7 @@ public class FolderController {
                     .orElseThrow(() -> new BadRequestException("Root folder with id " + root_folder_id + " not found."));
         }
         FolderEntity folderEntity = FolderEntity.builder()
-                .root_folder(rootFolder)
+                .rootFolder(rootFolder)
                 .owner(user)
                 .name(name)
                 .createdAt(Instant.now())

@@ -24,7 +24,7 @@ public class FolderEntity {
 
 
     @ManyToOne
-    private FolderEntity root_folder;
+    private FolderEntity rootFolder;
 
     @ManyToOne
     @JoinColumn(name="owner_id")

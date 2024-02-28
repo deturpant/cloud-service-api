@@ -14,4 +14,4 @@ spring:
 token:
   signing:
     key: FcdkyLzkszlmSWLqVksxk9UtljHBPz0KuiWNObPRdvONXIhKBvbpgvHT18zIk13piOHObhxXqGGs5sOatMr1Nw
-    jwtExpirationInMs: 300000
+    jwtExpirationInMs: 30000000

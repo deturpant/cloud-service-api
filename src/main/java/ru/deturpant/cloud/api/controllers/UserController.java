@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 import org.apache.catalina.User;
 import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import ru.deturpant.cloud.api.exceptions.UnauthorizedException;
 import ru.deturpant.cloud.api.factories.UserDtoFactory;
 import ru.deturpant.cloud.api.jwt.JwtAuthenticationResponse;
 import ru.deturpant.cloud.api.jwt.JwtTokenProvider;
+import ru.deturpant.cloud.api.listeners.UserCreatedEvent;
 import ru.deturpant.cloud.store.entities.RoleEntity;
 import ru.deturpant.cloud.store.entities.UserEntity;
 import ru.deturpant.cloud.store.repositories.UserRepository;
@@ -37,6 +39,7 @@ public class UserController {
     UserDtoFactory userDtoFactory;
     UserRepository userRepository;
     BCryptPasswordEncoder passwordEncoder;
+    ApplicationEventPublisher eventPublisher;
 
 
     @Qualifier("jwtTokenProvider")
@@ -103,7 +106,7 @@ public class UserController {
                         .lastLoginAt(Instant.now())
                         .build()
         );
-
+        eventPublisher.publishEvent(new UserCreatedEvent(this, user));
         return userDtoFactory.makeUserDto(user);
     }
 }

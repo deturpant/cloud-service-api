@@ -49,7 +49,16 @@ public class UserEntity implements UserDetails {
     @OneToMany(mappedBy = "owner")
     @Builder.Default
     private List<FolderEntity> folders = new ArrayList<>();
-
+    public FolderEntity getRootFolder() {
+        if (!folders.isEmpty()) {
+            return folders.getFirst();
+        }
+        return null;
+    }
+    public void setRootFolder(FolderEntity rootFolder) {
+        folders.clear();
+        folders.add(rootFolder);
+    }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role.name()));

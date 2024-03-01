@@ -15,7 +15,9 @@ import ru.deturpant.cloud.store.repositories.FolderRepository;
 import ru.deturpant.cloud.store.repositories.UserRepository;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,7 +29,7 @@ public class FolderController {
     UserRepository userRepository;
     static final String CREATE_FOLDER = "/api/folders";
     static final String GET_USER_ROOT_FOLDER = "/api/users/{user_id}/root-folder";
-
+    static final String GET_FOLDERS_BY_ROOT_FOLDER = "/api/folders/root/{root_folder_id}";
     @PostMapping(CREATE_FOLDER)
     public FolderDto createFolder(
             @RequestParam(required = true) String name,
@@ -48,6 +50,7 @@ public class FolderController {
                 .createdAt(Instant.now())
                 .modifiedAt(Instant.now())
                 .build();
+        folderEntity = folderRepository.saveAndFlush(folderEntity);
         return folderDtoFactory.makeFolderDto(folderEntity);
     }
     @GetMapping(GET_USER_ROOT_FOLDER)
@@ -59,5 +62,12 @@ public class FolderController {
                 .orElseThrow(() -> new NotFoundException("Root folder not found for user with id " + userId));
 
         return folderDtoFactory.makeFolderDto(rootFolder);
+    }
+    @GetMapping(GET_FOLDERS_BY_ROOT_FOLDER)
+    public List<FolderDto> getFoldersByRootFolder(@PathVariable("root_folder_id") Long rootFolderId) {
+        List<FolderEntity> folders = folderRepository.findByRootFolderId(rootFolderId);
+        return folders.stream()
+                .map(folderDtoFactory::makeFolderDto)
+                .collect(Collectors.toList());
     }
 }

@@ -15,6 +15,7 @@ import java.util.List;
 @Table(name = "file")
 public class FileEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne

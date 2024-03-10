@@ -5,10 +5,13 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
+import ru.deturpant.cloud.api.dto.FileDto;
 import ru.deturpant.cloud.api.dto.FolderDto;
 import ru.deturpant.cloud.api.exceptions.BadRequestException;
 import ru.deturpant.cloud.api.exceptions.NotFoundException;
+import ru.deturpant.cloud.api.factories.FileDtoFactory;
 import ru.deturpant.cloud.api.factories.FolderDtoFactory;
+import ru.deturpant.cloud.store.entities.FileEntity;
 import ru.deturpant.cloud.store.entities.FolderEntity;
 import ru.deturpant.cloud.store.entities.UserEntity;
 import ru.deturpant.cloud.store.repositories.FolderRepository;
@@ -27,9 +30,25 @@ public class FolderController {
     FolderDtoFactory folderDtoFactory;
     FolderRepository folderRepository;
     UserRepository userRepository;
+    FileDtoFactory fileDtoFactory;
     static final String CREATE_FOLDER = "/api/folders";
     static final String GET_USER_ROOT_FOLDER = "/api/users/{user_id}/root-folder";
     static final String GET_FOLDERS_BY_ROOT_FOLDER = "/api/folders/root/{root_folder_id}";
+    static final String GET_FILES_BY_FOLDER = "/api/folders/{folder_id}/files";
+
+    @GetMapping(GET_FILES_BY_FOLDER)
+    public List<FileDto> getFiles(
+            @PathVariable("folder_id") Long folderId
+    )
+    {
+        FolderEntity folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException("Folder not found"));
+        List<FileEntity> files = folder.getFiles();
+        return files.stream()
+                .map(fileDtoFactory::makeFileDto)
+                .collect(Collectors.toList());
+
+    }
     @PostMapping(CREATE_FOLDER)
     public FolderDto createFolder(
             @RequestParam(required = true) String name,

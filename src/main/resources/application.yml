@@ -3,14 +3,14 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/cloud-service
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://185.228.234.104:5430/cloud
+    username: deturpant
+    password: dbpvded8
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:
-      max-file-size: 20MB
-      max-request-size: 25MB
+      max-file-size: 40MB
+      max-request-size: 45MB
   jpa:
     hibernate:
       ddl-auto: update

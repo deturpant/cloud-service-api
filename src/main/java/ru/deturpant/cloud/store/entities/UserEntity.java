@@ -51,7 +51,7 @@ public class UserEntity implements UserDetails {
     private List<FolderEntity> folders = new ArrayList<>();
     public FolderEntity getRootFolder() {
         if (!folders.isEmpty()) {
-            return folders.getFirst();
+            return folders.get(0);
         }
         return null;
     }

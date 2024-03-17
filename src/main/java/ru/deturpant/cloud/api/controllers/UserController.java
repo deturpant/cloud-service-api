@@ -50,7 +50,8 @@ public class UserController {
     @PostMapping(LOGIN)
     public ResponseEntity<?> login(
             @RequestBody LoginRequest loginRequest
-            ) {
+            )
+    {
         String username = loginRequest.getLogin();
         String password = loginRequest.getPassword();
         UserEntity current_user = userRepository

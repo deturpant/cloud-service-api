@@ -21,6 +21,7 @@ import ru.deturpant.cloud.api.jwt.JwtAuthenticationResponse;
 import ru.deturpant.cloud.api.jwt.JwtTokenProvider;
 import ru.deturpant.cloud.api.listeners.UserCreatedEvent;
 import ru.deturpant.cloud.api.requests.LoginRequest;
+import ru.deturpant.cloud.api.requests.RegisterRequest;
 import ru.deturpant.cloud.store.entities.RoleEntity;
 import ru.deturpant.cloud.store.entities.UserEntity;
 import ru.deturpant.cloud.store.repositories.UserRepository;
@@ -79,10 +80,11 @@ public class UserController {
     }
     @PostMapping(CREATE_USER)
     public UserDto createUser(
-            @RequestParam(required = true) String username,
-            @RequestParam(required = true) String email,
-            @RequestParam(required = true) String password
-    ) {
+            @RequestBody RegisterRequest registerRequest
+            ) {
+        String email = registerRequest.getEmail();
+        String username = registerRequest.getUsername();
+        String password = registerRequest.getPassword();
         userRepository
                 .findByEmail(email)
                 .ifPresent(user -> {

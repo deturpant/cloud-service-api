@@ -11,10 +11,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.deturpant.cloud.api.dto.UserDto;
 import ru.deturpant.cloud.api.exceptions.BadRequestException;
 import ru.deturpant.cloud.api.exceptions.NotFoundException;
@@ -23,6 +20,7 @@ import ru.deturpant.cloud.api.factories.UserDtoFactory;
 import ru.deturpant.cloud.api.jwt.JwtAuthenticationResponse;
 import ru.deturpant.cloud.api.jwt.JwtTokenProvider;
 import ru.deturpant.cloud.api.listeners.UserCreatedEvent;
+import ru.deturpant.cloud.api.requests.LoginRequest;
 import ru.deturpant.cloud.store.entities.RoleEntity;
 import ru.deturpant.cloud.store.entities.UserEntity;
 import ru.deturpant.cloud.store.repositories.UserRepository;
@@ -50,9 +48,10 @@ public class UserController {
     private static final Integer DEFAULT_CAPACITY_GB = 20;
     @PostMapping(LOGIN)
     public ResponseEntity<?> login(
-            @RequestParam(required = true) String username,
-            @RequestParam(required = true) String password
-    ) {
+            @RequestBody LoginRequest loginRequest
+            ) {
+        String username = loginRequest.getLogin();
+        String password = loginRequest.getPassword();
         UserEntity current_user = userRepository
                 .findByUsername(username)
                 .orElseThrow(() -> new NotFoundException("User not found"));

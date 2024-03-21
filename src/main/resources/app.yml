@@ -3,9 +3,9 @@ server:
   port: 8080
 spring:
   datasource:
-    url: jdbc:postgresql://185.228.234.104:5430/cloud
-    username: deturpant
-    password: dbpvded8
+    url: jdbc:postgresql://localhost:5430/cloud
+    username: example
+    password: example
     driver-class-name: org.postgresql.Driver
   servlet:
     multipart:

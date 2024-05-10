@@ -42,6 +42,16 @@ public class FileController {
     static final String UPLOAD_FILE = "/api/files/upload";
     static final String DOWNLOAD_FILE = "/api/files/{file_id}";
 
+    @DeleteMapping(DOWNLOAD_FILE)
+    public ResponseEntity<String> deleteFile(
+            @PathVariable("file_id") Long fileId
+    ) {
+        FileEntity file = fileRepository.findById(fileId)
+                .orElseThrow(() -> new NotFoundException("File not found!"));
+        fileRepository.deleteById(file.getId());
+        return ResponseEntity.ok().body("{\"status\": \"OK\", \"message\": \"File deleted successfully\"}");
+    }
+
     @GetMapping(DOWNLOAD_FILE)
     public ResponseEntity<Resource> downloadFile(
             @PathVariable("file_id") Long rootFolderId

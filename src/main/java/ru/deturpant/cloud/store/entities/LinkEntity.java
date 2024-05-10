@@ -14,9 +14,10 @@ import java.time.Instant;
 @Table(name = "link")
 public class LinkEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "file_id")
     private FileEntity file;
 

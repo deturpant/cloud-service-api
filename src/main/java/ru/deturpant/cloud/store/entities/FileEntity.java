@@ -35,9 +35,9 @@ public class FileEntity {
 
     private Instant modifiedAt;
 
-    @OneToOne(mappedBy = "file")
+    @OneToMany(mappedBy = "file")
     @Builder.Default
-    private LinkEntity link = null;
+    private List<LinkEntity> links = new ArrayList<>();
 
     @OneToOne
     @Builder.Default

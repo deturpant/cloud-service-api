@@ -7,8 +7,10 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import ru.deturpant.cloud.api.dto.FileDto;
 import ru.deturpant.cloud.api.dto.LinkDto;
 import ru.deturpant.cloud.api.exceptions.NotFoundException;
+import ru.deturpant.cloud.api.factories.FileDtoFactory;
 import ru.deturpant.cloud.api.factories.LinkDtoFactory;
 import ru.deturpant.cloud.store.entities.FileEntity;
 import ru.deturpant.cloud.store.entities.LinkEntity;
@@ -25,7 +27,19 @@ public class LinkController {
     LinkRepository linkRepository;
     FileRepository fileRepository;
     LinkDtoFactory linkDtoFactory;
+    FileDtoFactory fileDtoFactory;
     static final String CREATE_LINK = "/api/links/files/{file_id}";
+    static final String GET_FILE_BY_LINK = "/api/links/{link}";
+
+    @GetMapping(GET_FILE_BY_LINK)
+    public FileDto getFile(
+            @PathVariable("link") String link
+    ) {
+        LinkEntity linkEntity = linkRepository.findByUrl("/f/" + link)
+                .orElseThrow(() -> new NotFoundException("File by link not found"));
+        FileEntity file = linkEntity.getFile();
+        return fileDtoFactory.makeFileDto(file);
+    }
 
     @GetMapping(CREATE_LINK)
     public LinkDto createLink(

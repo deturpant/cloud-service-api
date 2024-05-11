@@ -16,6 +16,11 @@ public class UserDtoFactory {
                 .role(entity.getRole())
                 .username(entity.getUsername())
                 .createdAt(entity.getRegisterAt())
+                .phone_number(entity.getPhone_number())
+                .bio(entity.getBio())
+                .email(entity.getEmail())
+                .capacity(entity.getCapacity())
+                .location(entity.getLocation())
                 .build();
 
     }

@@ -40,13 +40,22 @@ public class UserController {
     BCryptPasswordEncoder passwordEncoder;
     ApplicationEventPublisher eventPublisher;
 
-
     @Qualifier("jwtTokenProvider")
     JwtTokenProvider tokenProvider;
     private static final String CREATE_USER = "/api/users";
     private static final String LOGIN = "/api/login";
     private static final String IS_AUTH = "/api/auth";
+    private static final String GET_PROFILE_INFO = "/api/users/{userid}";
     private static final Integer DEFAULT_CAPACITY_GB = 20;
+
+    @GetMapping(GET_PROFILE_INFO)
+    public UserDto getProfileInfo(
+            @PathVariable("userid") Long userId
+    ) {
+        UserEntity user = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException("User not found"));
+        return userDtoFactory.makeUserDto(user);
+    }
     @PostMapping(LOGIN)
     public ResponseEntity<?> login(
             @RequestBody LoginRequest loginRequest

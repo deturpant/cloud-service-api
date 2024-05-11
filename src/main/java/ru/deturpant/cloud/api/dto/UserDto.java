@@ -17,6 +17,16 @@ public class UserDto {
 
     String username;
 
+    String email;
+
+    String phone_number;
+
+    Integer capacity;
+
+    String location;
+
+    String bio;
+
     RoleEntity role;
 
     @JsonProperty("created_at")

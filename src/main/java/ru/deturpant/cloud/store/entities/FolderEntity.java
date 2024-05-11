@@ -2,6 +2,7 @@ package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class FolderEntity {
     private UserEntity owner;
 
     @OneToMany(mappedBy = "folder")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @Builder.Default
     private List<FileEntity> files = new ArrayList<>();
 

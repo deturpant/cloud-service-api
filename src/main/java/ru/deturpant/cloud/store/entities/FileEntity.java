@@ -2,6 +2,7 @@ package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -36,6 +37,7 @@ public class FileEntity {
     private Instant modifiedAt;
 
     @OneToMany(mappedBy = "file")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @Builder.Default
     private List<LinkEntity> links = new ArrayList<>();
 

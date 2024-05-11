@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.deturpant.cloud.api.dto.FileDto;
 import ru.deturpant.cloud.api.dto.FolderDto;
@@ -35,6 +36,18 @@ public class FolderController {
     static final String GET_USER_ROOT_FOLDER = "/api/users/{user_id}/root-folder";
     static final String GET_FOLDERS_BY_ROOT_FOLDER = "/api/folders/root/{root_folder_id}";
     static final String GET_FILES_BY_FOLDER = "/api/folders/{folder_id}/files";
+    static final String DELETE_FOLDER = "/api/folders/{folder_id}";
+
+    @DeleteMapping(DELETE_FOLDER)
+    public ResponseEntity<String> deleteFolder(
+            @PathVariable("folder_id") Long folderId
+    )
+    {
+        FolderEntity folder = folderRepository.findById(folderId)
+                .orElseThrow(() -> new NotFoundException("Folder not found"));
+        folderRepository.deleteById(folderId);
+        return ResponseEntity.ok().body("{\"status\": \"OK\", \"message\": \"Folder deleted successfully\"}");
+    }
 
     @GetMapping(GET_FILES_BY_FOLDER)
     public List<FileDto> getFiles(

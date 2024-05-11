@@ -2,6 +2,7 @@ package ru.deturpant.cloud.store.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,7 @@ public class UserEntity implements UserDetails {
     private Instant lastLoginAt;
 
     @OneToMany(mappedBy = "owner")
+    @Cascade(org.hibernate.annotations.CascadeType.DELETE)
     @Builder.Default
     private List<FolderEntity> folders = new ArrayList<>();
     public FolderEntity getRootFolder() {

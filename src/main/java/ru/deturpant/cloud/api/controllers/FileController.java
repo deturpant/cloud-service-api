@@ -30,6 +30,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,7 +44,23 @@ public class FileController {
     FolderRepository folderRepository;
     static final String UPLOAD_FILE = "/api/files/upload";
     static final String DOWNLOAD_FILE = "/api/files/{file_id}";
+    static final String GET_IMAGES_BY_USERID = "/api/images/owner/{owner_id}";
 
+    @GetMapping(GET_IMAGES_BY_USERID)
+    public List<FileDto> getAllFilesByUserId(
+            @PathVariable("owner_id") Long userId
+    ) {
+        List<FolderEntity> userFolders = folderRepository.findAllByOwner_Id(userId);
+        List<FileEntity> userFiles = new ArrayList<>();
+        for (FolderEntity folder : userFolders) {
+            userFiles.addAll(
+                    folder.getFiles().stream()
+                            .filter(file -> file.getMime_type().startsWith("image/"))
+                            .toList()
+            );
+        }
+        return userFiles.stream().map(fileDtoFactory::makeFileDto).collect(Collectors.toList());
+    }
     @DeleteMapping(DOWNLOAD_FILE)
     public ResponseEntity<String> deleteFile(
             @PathVariable("file_id") Long fileId
